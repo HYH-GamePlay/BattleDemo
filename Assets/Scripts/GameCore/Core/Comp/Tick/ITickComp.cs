@@ -1,6 +1,6 @@
 using System;
 
-namespace GameCore{
+namespace GameCore.Core.Comp.Tick{
     public interface ITickable{
         void OnTick(TimeSpan ts);
     }
@@ -8,6 +8,8 @@ namespace GameCore{
     public interface ITickComp{
         void Register(ITickable tickable);
         void Unregister(ITickable tickable);
+        
+        void Tick(TimeSpan ts);
     }
 
 }

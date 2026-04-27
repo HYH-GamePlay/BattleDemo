@@ -1,0 +1,15 @@
+﻿2026-04-12 03:36:20.090 [INFO] Begin to build package : DefaultPackage by EditorSimulateBuildPipeline
+2026-04-12 03:36:20.091 [INFO] --------------------------------------------->TaskPrepare<--------------------------------------------
+2026-04-12 03:36:20.092 [INFO] TaskPrepare It takes 0 seconds in total
+2026-04-12 03:36:20.094 [INFO] --------------------------------------------->TaskGetBuildMap<--------------------------------------------
+2026-04-12 03:36:20.141 [INFO] TaskGetBuildMap It takes 0 seconds in total
+2026-04-12 03:36:20.141 [INFO] --------------------------------------------->TaskUpdateBundleInfo<--------------------------------------------
+2026-04-12 03:36:20.149 [INFO] TaskUpdateBundleInfo It takes 0 seconds in total
+2026-04-12 03:36:20.149 [INFO] --------------------------------------------->TaskCreateManifest<--------------------------------------------
+2026-04-12 03:36:20.162 [INFO] Create package manifest file: D:/Unity/Project/BattleDemo/Assets\..\YooAssetOutput/0/DefaultPackage/1.0.0/DefaultPackage_1.0.0.json
+2026-04-12 03:36:20.182 [INFO] Create package manifest file: D:/Unity/Project/BattleDemo/Assets\..\YooAssetOutput/0/DefaultPackage/1.0.0/DefaultPackage_1.0.0.bytes
+2026-04-12 03:36:20.183 [INFO] Create package manifest hash file: D:/Unity/Project/BattleDemo/Assets\..\YooAssetOutput/0/DefaultPackage/1.0.0/DefaultPackage_1.0.0.hash
+2026-04-12 03:36:20.185 [INFO] Create package manifest version file: D:/Unity/Project/BattleDemo/Assets\..\YooAssetOutput/0/DefaultPackage/1.0.0/DefaultPackage.version
+2026-04-12 03:36:20.192 [INFO] TaskCreateManifest It takes 0 seconds in total
+2026-04-12 03:36:20.193 [INFO] Total build process time: 0 seconds
+2026-04-12 03:36:20.193 [INFO] Resource pipeline build success

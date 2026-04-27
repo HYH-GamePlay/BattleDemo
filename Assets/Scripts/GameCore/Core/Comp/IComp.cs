@@ -1,6 +1,8 @@
-namespace GameCore{
+using Cysharp.Threading.Tasks;
+
+namespace GameCore.Core.Comp{
     public interface IComp{
-        void Init();
-        void UnInit();
+        UniTask Init();
+        UniTask UnInit();
     }
 }

@@ -1,3 +1,4 @@
+using Tools.Log;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Serialization;
@@ -26,9 +27,9 @@ public class FaceBoneTracker : MonoBehaviour
 
         // 检查是否找到骨骼
         if (m_HeadForwardBeginBone == null || m_HeadForwardEndBone == null)
-            Debug.LogWarning("未找到Head_Forward骨骼！");
+            HLog.LogW("未找到Head_Forward骨骼！");
         if (m_HeadLeftBeginBone == null || m_HeadLeftEndBone == null)
-            Debug.LogWarning("未找到Head_Left骨骼！");
+            HLog.LogW("未找到Head_Left骨骼！");
     }
 
     void Update()

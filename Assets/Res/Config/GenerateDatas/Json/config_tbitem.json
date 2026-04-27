@@ -1,0 +1,68 @@
+[
+  {
+    "Id": 1001,
+    "Name": "木剑",
+    "ItemType": 1,
+    "Quality": 1,
+    "MaxStack": 1,
+    "Icon": "Items/weapon_sword_wood",
+    "Desc": "一把普通的木剑",
+    "SellPrice": 10,
+    "BuyPrice": 50
+  },
+  {
+    "Id": 1002,
+    "Name": "铁剑",
+    "ItemType": 1,
+    "Quality": 2,
+    "MaxStack": 1,
+    "Icon": "Items/weapon_sword_iron",
+    "Desc": "一把坚固的铁剑",
+    "SellPrice": 50,
+    "BuyPrice": 200
+  },
+  {
+    "Id": 2001,
+    "Name": "小血瓶",
+    "ItemType": 3,
+    "Quality": 1,
+    "MaxStack": 99,
+    "Icon": "Items/potion_hp_small",
+    "Desc": "恢复50点生命值",
+    "SellPrice": 5,
+    "BuyPrice": 20
+  },
+  {
+    "Id": 2002,
+    "Name": "大血瓶",
+    "ItemType": 3,
+    "Quality": 2,
+    "MaxStack": 99,
+    "Icon": "Items/potion_hp_large",
+    "Desc": "恢复200点生命值",
+    "SellPrice": 20,
+    "BuyPrice": 80
+  },
+  {
+    "Id": 3001,
+    "Name": "皮甲",
+    "ItemType": 2,
+    "Quality": 1,
+    "MaxStack": 1,
+    "Icon": "Items/armor_leather",
+    "Desc": "一件普通的皮甲",
+    "SellPrice": 30,
+    "BuyPrice": 120
+  },
+  {
+    "Id": 9001,
+    "Name": "金币",
+    "ItemType": 4,
+    "Quality": 1,
+    "MaxStack": 9999,
+    "Icon": "Items/currency_gold",
+    "Desc": "通用货币",
+    "SellPrice": 0,
+    "BuyPrice": 0
+  }
+]

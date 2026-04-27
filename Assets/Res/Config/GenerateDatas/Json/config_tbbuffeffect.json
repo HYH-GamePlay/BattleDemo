@@ -1,0 +1,42 @@
+[
+  {
+    "Id": 1,
+    "EffectType": 1,
+    "TargetStat": 4,
+    "ModOp": 2,
+    "Value": 0.2,
+    "TickInterval": 0
+  },
+  {
+    "Id": 2,
+    "EffectType": 1,
+    "TargetStat": 8,
+    "ModOp": 1,
+    "Value": 2,
+    "TickInterval": 0
+  },
+  {
+    "Id": 3,
+    "EffectType": 2,
+    "TargetStat": 1,
+    "ModOp": 1,
+    "Value": 10,
+    "TickInterval": 1
+  },
+  {
+    "Id": 4,
+    "EffectType": 6,
+    "TargetStat": 1,
+    "ModOp": 1,
+    "Value": 0,
+    "TickInterval": 0
+  },
+  {
+    "Id": 5,
+    "EffectType": 3,
+    "TargetStat": 1,
+    "ModOp": 1,
+    "Value": 5,
+    "TickInterval": 1
+  }
+]

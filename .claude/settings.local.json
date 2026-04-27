@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git mv:*)",
+      "mcp__UnityMCP__manage_asset",
+      "mcp__UnityMCP__manage_scene",
+      "mcp__UnityMCP__manage_gameobject",
+      "mcp__UnityMCP__manage_components",
+      "mcp__UnityMCP__create_script",
+      "mcp__UnityMCP__refresh_unity",
+      "mcp__UnityMCP__read_console",
+      "mcp__UnityMCP__execute_code",
+      "mcp__UnityMCP__validate_script",
+      "mcp__UnityMCP__manage_editor",
+      "mcp__UnityMCP__manage_build",
+      "Bash(xargs grep:*)",
+      "Bash(find Assets -name \"*.asset\" -exec grep -l \"Package\\\\|YooAsset\" {} \\\\;)",
+      "mcp__UnityMCP__execute_menu_item",
+      "Bash(ls -la .claude/projects/*/memory/)",
+      "Bash(python3:*)",
+      "Bash(unzip -p CombatFramework_TDD.docx word/document.xml)",
+      "mcp__UnityMCP__manage_prefabs",
+      "mcp__UnityMCP__find_gameobjects",
+      "mcp__UnityMCP__batch_execute",
+      "Bash(python3 -c ' *)",
+      "Bash(python -c ' *)",
+      "Bash(python *)",
+      "mcp__UnityMCP__manage_script",
+      "Bash(dotnet ../Tools/Luban/Luban.dll -t client -c cs-bin -d json -d bin --conf luban.conf -x cs-bin.outputCodeDir=../../Assets/Scripts/Config/Gen -x json.outputDataDir=../../Assets/Res/Config/GenerateDatas/Json -x bin.outputDataDir=../../Assets/Res/Config/GenerateDatas/Byte)",
+      "Bash(rm \"D:/Unity/Project/BattleDemo/Assets/Scripts/Combat/Data/StatTableData.cs\")",
+      "Bash(rm \"D:/Unity/Project/BattleDemo/Assets/Scripts/Combat/Data/StatTableData.cs.meta\")",
+      "Bash(cmd /c gen.bat)",
+      "Bash(dotnet \"../Tools/Luban/Luban.dll\" -t client -c cs-bin -d json -d bin --conf luban.conf -x cs-bin.outputCodeDir=../../Assets/Scripts/Config/Gen -x json.outputDataDir=../../Assets/Res/Config/GenerateDatas/Json -x bin.outputDataDir=../../Assets/Res/Config/GenerateDatas/Byte)",
+      "Bash(cmd /c \"D:\\\\Unity\\\\Project\\\\BattleDemo\\\\Luban\\\\DataTables\\\\gen.bat\")"
+    ]
+  }
+}

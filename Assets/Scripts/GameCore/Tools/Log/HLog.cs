@@ -72,9 +72,6 @@ namespace Tools.Log{
         }
 
         private static void LogLevelFormat(LogLevel level, string message, object owner = null, params object[] args){
-            if (!LogConfig.Instance.enable)
-                return;
-
             switch (level){
                 case LogLevel.None:
                     Debug.Log(SplicingLog(level, message, owner, args));

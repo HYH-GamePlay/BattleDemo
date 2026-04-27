@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9dec69b9c8e45baab77f4d30b9b2ec7, type: 3}
+  m_Name: UIConfig
+  m_EditorClassIdentifier: GameCore::GameCore.Core.Comp.UI.UIConfig
+  layer: 2
+  prefab:
+    _asset: {fileID: 8971526423248947908, guid: 4aea247e99146344d9d7aef7d132b8c3, type: 3}
+    _assemblyQualifiedName: 
+  script:
+    _asset: {fileID: 11500000, guid: 15d895bcdc423814e871b9dc4a170962, type: 3}
+    _assemblyQualifiedName: GameLogic.UI.Lobby.UILobby, GameLogic, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null

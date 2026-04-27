@@ -1,0 +1,9 @@
+[
+  {
+    "Id": 101,
+    "ActorId": 101,
+    "Tier": 1,
+    "PrefabPath": "Assets/Res/Prefabs/Enemy_Normal.prefab",
+    "AttackPatternPath": ""
+  }
+]

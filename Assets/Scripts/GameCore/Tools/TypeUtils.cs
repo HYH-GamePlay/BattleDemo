@@ -6,6 +6,8 @@ using System.Reflection;
 using Newtonsoft.Json;
 
 namespace Tools{
+#if UNITY_EDITOR
+    
     public static class TypeUtils{
         public static IEnumerable<Type> GetBaseType(Type baseType){
             return AppDomain.CurrentDomain.GetAssemblies()
@@ -29,4 +31,6 @@ namespace Tools{
             }
         }
     }
+    
+#endif
 }

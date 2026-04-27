@@ -2,6 +2,7 @@
   "dependencies": {
     "com.code-philosophy.hybridclr": "https://gitee.com/focus-creative-games/hybridclr_unity.git",
     "com.code-philosophy.luban": "https://gitee.com/focus-creative-games/luban_unity.git",
+    "com.coplaydev.unity-mcp": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main",
     "com.github.siccity.xnode": "https://github.com/Siccity/xNode.git",
     "com.tuyoogame.yooasset": "2.3.18",
     "com.unity.ai.navigation": "2.0.10",

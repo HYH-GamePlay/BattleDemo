@@ -4,7 +4,7 @@ using Tools.Log;
 using Tools.ReferencePool;
 
 namespace GameCore.FSM{
-    public sealed class Fsm<T> : FsmBase, IReference, IFsm<T> where T : class{
+    public class Fsm<T> : FsmBase, IReference, IFsm<T> where T : class{
         private string _name;
         private T _owner;
         private Blackboard _blackboard;
@@ -15,16 +15,16 @@ namespace GameCore.FSM{
         public string Name => _name;
         public T Owner => _owner;
 
-        public override int FsmStateCount => _stateDic.Count;
+        public override int FsmStateCount => StateDic.Count;
         public override bool IsRunning => _isRunning;
         public override bool IsDestroyed => _isDestroyed;
-        public override string CurrentStateName => CurrentState?.Name;
+        public override string CurrentStateName => CurrentState?.name;
         public override float CurrentStateTime => _currentStateTime;
         public FsmState<T> CurrentState{ get; private set; }
 
-        private readonly Dictionary<Type, FsmState<T>> _stateDic = new();
+        protected readonly Dictionary<Type, FsmState<T>> StateDic = new();
 
-        private void Init(){
+        protected virtual void Init(){
             _blackboard = ReferencePool.Acquire<Blackboard>();
         }
 
@@ -34,7 +34,7 @@ namespace GameCore.FSM{
             fsm._owner = owner;
             fsm.Init();
             foreach (var state in states){
-                fsm._stateDic.Add(state.GetType(), state);
+                fsm.StateDic.Add(state.GetType(), state);
                 state.OnInit(fsm);
             }
 
@@ -56,10 +56,10 @@ namespace GameCore.FSM{
         public void Stop(){
             CurrentState.OnExit();
             
-            foreach (var (type, state) in _stateDic){
+            foreach (var (type, state) in StateDic){
                 state.OnDestroy();
             }
-            _stateDic.Clear();
+            StateDic.Clear();
             ReferencePool.Release(this);
             
             _name = string.Empty;
@@ -71,11 +71,11 @@ namespace GameCore.FSM{
         }
 
         public FsmState<T> GetState(Type state){
-            if (!_stateDic.ContainsKey(state)){
+            if (!StateDic.ContainsKey(state)){
                 HLog.LogE("获取的状态不存在");
             }
 
-            return _stateDic[state];
+            return StateDic[state];
         }
 
         public FsmState<T> GetState<TFsmState>() where TFsmState : FsmState<T>{
@@ -85,6 +85,12 @@ namespace GameCore.FSM{
         public void ChangeState<TFsmState>() where TFsmState : FsmState<T>{
             CurrentState?.OnExit();
             CurrentState = GetState<TFsmState>();
+            CurrentState?.OnEnter(this);
+        }
+
+        public void ChangeState<TFsmState>(TFsmState state) where TFsmState : FsmState<T>{
+            CurrentState?.OnExit();
+            CurrentState = state;
             CurrentState?.OnEnter(this);
         }
 

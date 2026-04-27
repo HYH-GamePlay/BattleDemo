@@ -1,0 +1,13 @@
+[
+  {
+    "DefenseReductionRatio": 0.5,
+    "PerfectBlockWindow": 0.3,
+    "CounterDamageMultiplier": 2,
+    "CounterWindowDuration": 0.5,
+    "DodgeStaminaCost": 25,
+    "DodgeDuration": 0.3,
+    "DefenseScaleMin": 0.1,
+    "DefenseScaleMax": 1,
+    "DefenseScaleRange": 100
+  }
+]

@@ -1,10 +1,13 @@
 using System;
 
 namespace GameCore.FSM{
-    public abstract class FsmState<T> where T : class{
-        public string Name{ get; protected set; } = string.Empty;
+    public abstract class FsmState<T> : IFsmState<T> where T : class{
+        public string name{ get; protected set; } = string.Empty;
+        protected IFsm<T> fsm{ get; private set; }
 
-        public virtual void OnInit(IFsm<T> fsm){ }
+        public virtual void OnInit(IFsm<T> fsm){
+            this.fsm = (Fsm<T>)fsm;
+        }
 
         public virtual void OnEnter(IFsm<T> fsm){ }
 
@@ -14,13 +17,12 @@ namespace GameCore.FSM{
 
         public virtual void OnDestroy(){ }
 
-        public void ChangeState<TState>(IFsm<T> fsm) where TState : FsmState<T>{
-            var fsmImplement = (Fsm<T>)fsm;
-            if (fsmImplement == null){
-                throw new Exception("fsmImplement is null");
-            }
+        public void ChangeState<TState>() where TState : FsmState<T>{
+            fsm.ChangeState<TState>();
+        }
 
-            fsmImplement.ChangeState<TState>();
+        public void ChangeState<TState>(TState state) where TState : FsmState<T>{
+            fsm.ChangeState(state);
         }
     }
 }

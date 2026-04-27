@@ -1,0 +1,58 @@
+[
+  {
+    "Id": 1001,
+    "BuffId": "buff_atk_up",
+    "Type": 1,
+    "DefaultDuration": 10,
+    "MaxStacks": 3,
+    "Icon": "Buffs/atk_up",
+    "EffectIds": [
+      1,
+      2
+    ]
+  },
+  {
+    "Id": 1002,
+    "BuffId": "buff_speed_up",
+    "Type": 1,
+    "DefaultDuration": 8,
+    "MaxStacks": 1,
+    "Icon": "Buffs/speed_up",
+    "EffectIds": [
+      2
+    ]
+  },
+  {
+    "Id": 2001,
+    "BuffId": "debuff_poison",
+    "Type": 2,
+    "DefaultDuration": 5,
+    "MaxStacks": 5,
+    "Icon": "Buffs/poison",
+    "EffectIds": [
+      3
+    ]
+  },
+  {
+    "Id": 2002,
+    "BuffId": "debuff_stun",
+    "Type": 2,
+    "DefaultDuration": 2,
+    "MaxStacks": 1,
+    "Icon": "Buffs/stun",
+    "EffectIds": [
+      4
+    ]
+  },
+  {
+    "Id": 3001,
+    "BuffId": "buff_regen",
+    "Type": 1,
+    "DefaultDuration": 10,
+    "MaxStacks": 1,
+    "Icon": "Buffs/regen",
+    "EffectIds": [
+      5
+    ]
+  }
+]

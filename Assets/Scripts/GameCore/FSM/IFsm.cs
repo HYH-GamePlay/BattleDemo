@@ -8,7 +8,10 @@ namespace GameCore.FSM{
 
         void OnTick(TimeSpan ts);
         void ChangeState<TFsmState>() where TFsmState : FsmState<T>;
+        void ChangeState<TFsmState>(TFsmState state) where TFsmState : FsmState<T>;
         FsmState<T> GetState(Type state);
         FsmState<T> GetState<TFsmState>() where TFsmState : FsmState<T>;
+        void SetData<TValueType>(string name, TValueType value);
+        TData GetData<TData>(string name);
     }
 }

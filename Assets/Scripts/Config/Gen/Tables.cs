@@ -13,17 +13,44 @@ namespace cfg
 {
 public partial class Tables
 {
-    public demo.Tbitem Tbitem {get; }
+    public Config.TbActor TbActor {get; }
+    public Config.TbWeapon TbWeapon {get; }
+    public Config.TbDropItem TbDropItem {get; }
+    public Config.TbDropGroup TbDropGroup {get; }
+    public Config.TbConstant TbConstant {get; }
+    public Config.TbItem TbItem {get; }
+    public Config.TbBuff TbBuff {get; }
+    public Config.TbBuffEffect TbBuffEffect {get; }
+    public Config.TbEnemy TbEnemy {get; }
+    public Config.TbRelic TbRelic {get; }
 
     public Tables(System.Func<string, ByteBuf> loader)
     {
-        Tbitem = new demo.Tbitem(loader("demo_tbitem"));
+        TbActor = new Config.TbActor(loader("config_tbactor"));
+        TbWeapon = new Config.TbWeapon(loader("config_tbweapon"));
+        TbDropItem = new Config.TbDropItem(loader("config_tbdropitem"));
+        TbDropGroup = new Config.TbDropGroup(loader("config_tbdropgroup"));
+        TbConstant = new Config.TbConstant(loader("config_tbconstant"));
+        TbItem = new Config.TbItem(loader("config_tbitem"));
+        TbBuff = new Config.TbBuff(loader("config_tbbuff"));
+        TbBuffEffect = new Config.TbBuffEffect(loader("config_tbbuffeffect"));
+        TbEnemy = new Config.TbEnemy(loader("config_tbenemy"));
+        TbRelic = new Config.TbRelic(loader("config_tbrelic"));
         ResolveRef();
     }
     
     private void ResolveRef()
     {
-        Tbitem.ResolveRef(this);
+        TbActor.ResolveRef(this);
+        TbWeapon.ResolveRef(this);
+        TbDropItem.ResolveRef(this);
+        TbDropGroup.ResolveRef(this);
+        TbConstant.ResolveRef(this);
+        TbItem.ResolveRef(this);
+        TbBuff.ResolveRef(this);
+        TbBuffEffect.ResolveRef(this);
+        TbEnemy.ResolveRef(this);
+        TbRelic.ResolveRef(this);
     }
 }
 
