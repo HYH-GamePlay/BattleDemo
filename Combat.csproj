@@ -47,36 +47,39 @@
     <Analyzer Include="D:\Unity\Tool\6000.3.10f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Combat\View\CombatSceneBridge.cs" />
-    <Compile Include="Assets\Scripts\Combat\View\BattleTestRunner.cs" />
-    <Compile Include="Assets\Scripts\Combat\FSM\States\CombatStates.cs" />
-    <Compile Include="Assets\Scripts\Combat\Buff\BuffEffectData.cs" />
-    <Compile Include="Assets\Scripts\Combat\Skill\SkillContext.cs" />
-    <Compile Include="Assets\Scripts\Combat\View\AnimationView.cs" />
-    <Compile Include="Assets\Scripts\Combat\Core\PositionComponent.cs" />
-    <Compile Include="Assets\Scripts\Combat\View\AudioView.cs" />
-    <Compile Include="Assets\Scripts\Combat\Core\VitalComponent.cs" />
-    <Compile Include="Assets\Scripts\Combat\Rogue\RelicSystem.cs" />
-    <Compile Include="Assets\Scripts\Combat\Core\CombatManager.cs" />
-    <Compile Include="Assets\Scripts\Combat\Core\HitSystem.cs" />
-    <Compile Include="Assets\Scripts\Combat\View\CombatInputHandler.cs" />
-    <Compile Include="Assets\Scripts\Combat\Core\IHitProcessor.cs" />
-    <Compile Include="Assets\Scripts\Combat\FSM\EntityFsm.cs" />
-    <Compile Include="Assets\Scripts\Combat\Core\Processors\HitProcessors.cs" />
-    <Compile Include="Assets\Scripts\Combat\View\EntityView.cs" />
-    <Compile Include="Assets\Scripts\Combat\View\VFXView.cs" />
-    <Compile Include="Assets\Scripts\Combat\Core\StatSheet.cs" />
-    <Compile Include="Assets\Scripts\Combat\Core\HitPipeline.cs" />
-    <Compile Include="Assets\Scripts\Combat\View\SkillVFXHandler.cs" />
-    <Compile Include="Assets\Scripts\Combat\Skill\SkillExecution.cs" />
-    <Compile Include="Assets\Scripts\Combat\Core\EventBus.cs" />
-    <Compile Include="Assets\Scripts\Combat\Buff\BuffDefinitionSO.cs" />
-    <Compile Include="Assets\Scripts\Combat\Skill\SkillSystem.cs" />
-    <Compile Include="Assets\Scripts\Combat\View\TransformSyncSystem.cs" />
-    <Compile Include="Assets\Scripts\Combat\View\HealthBarView.cs" />
-    <Compile Include="Assets\Scripts\Combat\Core\CombatEntity.cs" />
-    <Compile Include="Assets\Scripts\Combat\Skill\SkillGraph.cs" />
-    <Compile Include="Assets\Scripts\Combat\Buff\BuffSystem.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Core\CombatVector3.cs" />
+    <Compile Include="Assets\Scripts\Combat\UnityBridge\CombatDefinitionCatalog.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Cues\CueRequest.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Abilities\AbilityActivationRequest.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Core\CombatWorld.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Actors\CombatActorDefinition.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Data\LubanCombatDefinitionFactory.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Attributes\AttributeSet.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Data\CombatDataRegistry.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Cues\CueSystem.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Events\CombatEvents.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Abilities\AbilitySystem.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Effects\EffectSystem.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Events\CombatEventBus.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Effects\EffectApplicationRequest.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Core\CombatWorldOptions.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Damage\DamageRequest.cs" />
+    <Compile Include="Assets\Scripts\Combat\UnityBridge\CombatUnityConversions.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Hitboxes\HitboxSystem.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Actors\CombatActor.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Effects\EffectDefinition.cs" />
+    <Compile Include="Assets\Scripts\Combat\UnityBridge\CombatWorldBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Attributes\AttributeModifier.cs" />
+    <Compile Include="Assets\Scripts\Combat\UnityBridge\CombatCueRouter.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Hitboxes\HitboxDefinition.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Abilities\AbilityDefinition.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Timeline\TimelineSystem.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Damage\DamageSystem.cs" />
+    <Compile Include="Assets\Scripts\Combat\UnityBridge\CombatActorView.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Timeline\TimelineDefinition.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Core\CombatMath.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Core\CombatIdentifiers.cs" />
+    <Compile Include="Assets\Scripts\Combat\Runtime\Tags\GameplayTagContainer.cs" />
     <None Include="Assets\Scripts\Combat\Combat.asmdef" />
     <Reference Include="UnityEngine">
       <HintPath>D:\Unity\Tool\6000.3.10f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
@@ -930,47 +933,20 @@
     <Reference Include="System.Xml.Serialization">
       <HintPath>D:\Unity\Tool\6000.3.10f1\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.Xml.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="Luban.Runtime">
-      <HintPath>D:\Unity\Project\BattleDemo\Library\ScriptAssemblies\Luban.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.InputSystem">
-      <HintPath>D:\Unity\Project\BattleDemo\Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="XNode">
-      <HintPath>D:\Unity\Project\BattleDemo\Library\ScriptAssemblies\XNode.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mathematics">
-      <HintPath>D:\Unity\Project\BattleDemo\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst">
-      <HintPath>D:\Unity\Project\BattleDemo\Library\ScriptAssemblies\Unity.Burst.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Collections">
-      <HintPath>D:\Unity\Project\BattleDemo\Library\ScriptAssemblies\Unity.Collections.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>D:\Unity\Project\BattleDemo\Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>D:\Unity\Project\BattleDemo\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="Luban.Runtime">
+      <HintPath>D:\Unity\Project\BattleDemo\Library\ScriptAssemblies\Luban.Runtime.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="GameCore.csproj">
-      <Project>{93e79f89-c7bb-35e3-08f1-ebe4bebf237e}</Project>
-      <Name>GameCore</Name>
-    </ProjectReference>
     <ProjectReference Include="Config.csproj">
       <Project>{2759976a-8f41-61dd-fb3a-067eaa4b5cd9}</Project>
       <Name>Config</Name>
-    </ProjectReference>
-    <ProjectReference Include="UniTask.csproj">
-      <Project>{597c18d3-9b01-5e0f-603e-c42efaa4e821}</Project>
-      <Name>UniTask</Name>
-    </ProjectReference>
-    <ProjectReference Include="Kybernetik.Animancer.csproj">
-      <Project>{7083e645-062e-2931-be5b-173f59e763e7}</Project>
-      <Name>Kybernetik.Animancer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
