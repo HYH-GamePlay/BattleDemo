@@ -39,8 +39,7 @@ namespace GameLogic{
             ServiceLocator.Register<IUIComp>(new UIComp());
             
             _gameStateFsm = Fsm<GameEntry>.Creat("GameStateFsm", this, new List<FsmState<GameEntry>>{
-                new GameStateInit(),
-                new GameStateBattle()
+                new GameStateInit()
             });
             
             foreach (var service in ServiceLocator.GetAll<IComp>()){

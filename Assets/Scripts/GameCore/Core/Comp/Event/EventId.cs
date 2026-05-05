@@ -28,13 +28,6 @@ namespace GameCore.Core.Comp.Event{
         UIHide = 3003,
 
         // 战斗事件 (4000-4999)
-        BattleStart = 4000,
-        BattleEnd = 4001,
-        EnemyDeath = 4002,
-        BossDeath = 4003,
-        ComboHit = 4004,
-        SkillUse = 4005,
-
         // 物品事件 (5000-5999)
         ItemPickup = 5000,
         ItemDrop = 5001,

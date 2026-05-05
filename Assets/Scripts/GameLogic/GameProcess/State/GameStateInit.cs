@@ -10,8 +10,6 @@ namespace GameLogic.GameProcess.State{
         public override void OnEnter(IFsm<GameEntry> fsm){
             base.OnEnter(fsm);
             HLog.Log("进入:" + stateId);
-            
-            ChangeState<GameStateBattle>();
         }
     }
 }
