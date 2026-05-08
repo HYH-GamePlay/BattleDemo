@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Battle.Ability;
+using Battle.Behavior;
 using Battle.CombatInfo;
 
 namespace Battle.Core
@@ -9,12 +9,13 @@ namespace Battle.Core
     {
         private readonly CombatInfoStore _infos = new CombatInfoStore();
         private readonly HashSet<ActorId> _actors = new HashSet<ActorId>();
-        private readonly Dictionary<AbilityHandle, IAbility> _abilities = new Dictionary<AbilityHandle, IAbility>();
-        private readonly Dictionary<ActorId, List<AbilityHandle>> _actorAbilities = new Dictionary<ActorId, List<AbilityHandle>>();
-        private readonly List<IAbility> _tickBuffer = new List<IAbility>(64);
+        private readonly Dictionary<BehaviorHandle, IBehavior> _behaviors = new Dictionary<BehaviorHandle, IBehavior>();
+        private readonly Dictionary<ActorId, List<BehaviorHandle>> _actorBehaviors = new Dictionary<ActorId, List<BehaviorHandle>>();
+        private readonly Dictionary<ActorId, Dictionary<Type, InfoHandle>> _actorInfos = new Dictionary<ActorId, Dictionary<Type, InfoHandle>>();
+        private readonly List<IBehavior> _tickBuffer = new List<IBehavior>(64);
 
         private int _nextActorId = 1;
-        private int _nextAbilityHandle = 1;
+        private int _nextBehaviorHandle = 1;
         private float _elapsedTime;
 
         public long Frame { get; private set; }
@@ -23,23 +24,33 @@ namespace Battle.Core
         {
             var actorId = new ActorId(_nextActorId++);
             _actors.Add(actorId);
-            _actorAbilities.Add(actorId, new List<AbilityHandle>());
+            _actorBehaviors.Add(actorId, new List<BehaviorHandle>());
+            _actorInfos.Add(actorId, new Dictionary<Type, InfoHandle>());
             return actorId;
         }
 
         public bool DestroyActor(ActorId actorId)
         {
-            if (!_actorAbilities.TryGetValue(actorId, out var handles))
+            if (!_actorBehaviors.TryGetValue(actorId, out var handles))
             {
                 return false;
             }
 
             for (var i = handles.Count - 1; i >= 0; i--)
             {
-                DetachAbility(handles[i]);
+                DetachBehavior(handles[i]);
             }
 
-            _actorAbilities.Remove(actorId);
+            if (_actorInfos.TryGetValue(actorId, out var infoHandles))
+            {
+                foreach (var handle in infoHandles.Values)
+                {
+                    RemoveInfo(handle);
+                }
+            }
+
+            _actorInfos.Remove(actorId);
+            _actorBehaviors.Remove(actorId);
             return _actors.Remove(actorId);
         }
 
@@ -50,9 +61,54 @@ namespace Battle.Core
 
         public IReadOnlyCollection<ActorId> Actors => _actors;
 
-        public InfoHandle AddInfo<T>(T info) where T : class, ICombatInfo
+        public InfoHandle AddInfo<T>(T info) where T : class, IBehaviorInfo
         {
             return _infos.AddInfo(info);
+        }
+
+        public InfoHandle AddActorInfo<T>(ActorId actorId, T info) where T : class, IBehaviorInfo
+        {
+            if (!_actorInfos.TryGetValue(actorId, out var infos))
+            {
+                throw new InvalidOperationException($"Actor does not exist: {actorId}");
+            }
+
+            var type = typeof(T);
+            if (infos.ContainsKey(type))
+            {
+                throw new InvalidOperationException($"Actor info already exists. Actor: {actorId}, Info: {type.Name}");
+            }
+
+            var handle = AddInfo(info);
+            infos.Add(type, handle);
+            return handle;
+        }
+
+        public InfoHandle GetOrAddActorInfo<T>(ActorId actorId) where T : class, IBehaviorInfo, new()
+        {
+            if (TryGetActorInfo(actorId, out InfoHandle handle, out T _))
+            {
+                return handle;
+            }
+
+            return AddActorInfo(actorId, new T());
+        }
+
+        public bool TryGetActorInfo<T>(ActorId actorId, out InfoHandle handle, out T info) where T : class, IBehaviorInfo
+        {
+            handle = InfoHandle.Invalid;
+            info = null;
+            if (!_actorInfos.TryGetValue(actorId, out var infos))
+            {
+                return false;
+            }
+
+            if (!infos.TryGetValue(typeof(T), out handle))
+            {
+                return false;
+            }
+
+            return TryGetInfo(handle, out info);
         }
 
         public bool RemoveInfo(InfoHandle handle)
@@ -60,7 +116,7 @@ namespace Battle.Core
             return _infos.RemoveInfo(handle);
         }
 
-        public bool RemoveInfo(ICombatInfo info)
+        public bool RemoveInfo(IBehaviorInfo info)
         {
             return _infos.RemoveInfo(info);
         }
@@ -70,22 +126,22 @@ namespace Battle.Core
             return _infos.HasInfo(handle);
         }
 
-        public bool HasInfo(ICombatInfo info)
+        public bool HasInfo(IBehaviorInfo info)
         {
             return _infos.HasInfo(info);
         }
 
-        public InfoHandle GetInfoHandle(ICombatInfo info)
+        public InfoHandle GetInfoHandle(IBehaviorInfo info)
         {
             return _infos.GetHandle(info);
         }
 
-        public T GetInfo<T>(InfoHandle handle) where T : class, ICombatInfo
+        public T GetInfo<T>(InfoHandle handle) where T : class, IBehaviorInfo
         {
             return _infos.GetInfo<T>(handle);
         }
 
-        public bool TryGetInfo<T>(InfoHandle handle, out T info) where T : class, ICombatInfo
+        public bool TryGetInfo<T>(InfoHandle handle, out T info) where T : class, IBehaviorInfo
         {
             return _infos.TryGetInfo(handle, out info);
         }
@@ -95,7 +151,7 @@ namespace Battle.Core
             _infos.MarkDirty(handle);
         }
 
-        public void MarkInfoDirty(ICombatInfo info)
+        public void MarkInfoDirty(IBehaviorInfo info)
         {
             _infos.MarkDirty(info);
         }
@@ -105,37 +161,37 @@ namespace Battle.Core
             return _infos.GetVersion(handle);
         }
 
-        public AbilityHandle AttachAbility(ActorId owner, IAbility ability)
+        public BehaviorHandle AttachBehavior(ActorId owner, IBehavior behavior)
         {
-            if (ability == null)
+            if (behavior == null)
             {
-                throw new ArgumentNullException(nameof(ability));
+                throw new ArgumentNullException(nameof(behavior));
             }
 
-            if (!_actorAbilities.TryGetValue(owner, out var handles))
+            if (!_actorBehaviors.TryGetValue(owner, out var handles))
             {
                 throw new InvalidOperationException($"Actor does not exist: {owner}");
             }
 
-            var handle = new AbilityHandle(_nextAbilityHandle++);
-            _abilities.Add(handle, ability);
+            var handle = new BehaviorHandle(_nextBehaviorHandle++);
+            _behaviors.Add(handle, behavior);
             handles.Add(handle);
-            ability.OnAttach(this, owner, handle);
+            behavior.OnAttach(this, owner, handle);
             return handle;
         }
 
-        public bool DetachAbility(AbilityHandle handle)
+        public bool DetachBehavior(BehaviorHandle handle)
         {
-            if (!_abilities.TryGetValue(handle, out var ability))
+            if (!_behaviors.TryGetValue(handle, out var behavior))
             {
                 return false;
             }
 
-            var owner = ability.Owner;
-            ability.OnDetach(this);
-            _abilities.Remove(handle);
+            var owner = behavior.Owner;
+            behavior.OnDetach(this);
+            _behaviors.Remove(handle);
 
-            if (_actorAbilities.TryGetValue(owner, out var handles))
+            if (_actorBehaviors.TryGetValue(owner, out var handles))
             {
                 handles.Remove(handle);
             }
@@ -143,14 +199,34 @@ namespace Battle.Core
             return true;
         }
 
-        public bool TryGetAbility(AbilityHandle handle, out IAbility ability)
+        public bool TryGetBehavior(BehaviorHandle handle, out IBehavior behavior)
         {
-            return _abilities.TryGetValue(handle, out ability);
+            return _behaviors.TryGetValue(handle, out behavior);
         }
 
-        public IReadOnlyList<AbilityHandle> GetAbilityHandles(ActorId actorId)
+        public bool TryGetBehavior<T>(ActorId actorId, out T behavior) where T : class, IBehavior
         {
-            if (_actorAbilities.TryGetValue(actorId, out var handles))
+            behavior = null;
+            if (!_actorBehaviors.TryGetValue(actorId, out var handles))
+            {
+                return false;
+            }
+
+            for (var i = 0; i < handles.Count; i++)
+            {
+                if (_behaviors.TryGetValue(handles[i], out var value) && value is T typed)
+                {
+                    behavior = typed;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public IReadOnlyList<BehaviorHandle> GetBehaviorHandles(ActorId actorId)
+        {
+            if (_actorBehaviors.TryGetValue(actorId, out var handles))
             {
                 return handles;
             }
@@ -171,7 +247,7 @@ namespace Battle.Core
 
             TickPhase(CombatPhase.PreUpdate, time);
             TickPhase(CombatPhase.Input, time);
-            TickPhase(CombatPhase.Ability, time);
+            TickPhase(CombatPhase.Action, time);
             TickPhase(CombatPhase.Movement, time);
             TickPhase(CombatPhase.Hit, time);
             TickPhase(CombatPhase.Damage, time);
@@ -183,20 +259,20 @@ namespace Battle.Core
         private void TickPhase(CombatPhase phase, in CombatTime time)
         {
             _tickBuffer.Clear();
-            foreach (var ability in _abilities.Values)
+            foreach (var behavior in _behaviors.Values)
             {
-                if (ability.IsActive && ability.Phase == phase)
+                if (behavior.IsActive && behavior.Phase == phase)
                 {
-                    _tickBuffer.Add(ability);
+                    _tickBuffer.Add(behavior);
                 }
             }
 
             for (var i = 0; i < _tickBuffer.Count; i++)
             {
-                var ability = _tickBuffer[i];
-                if (ability.IsActive)
+                var behavior = _tickBuffer[i];
+                if (behavior.IsActive)
                 {
-                    ability.Tick(this, time);
+                    behavior.Tick(this, time);
                 }
             }
         }

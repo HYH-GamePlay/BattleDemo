@@ -4,7 +4,8 @@ namespace Battle.Core
     {
         PreUpdate = 0,
         Input = 100,
-        Ability = 200,
+        Action = 200,
+        Ability = Action,
         Movement = 300,
         Hit = 400,
         Damage = 500,

@@ -31,7 +31,19 @@
       "Bash(rm \"D:/Unity/Project/BattleDemo/Assets/Scripts/Combat/Data/StatTableData.cs.meta\")",
       "Bash(cmd /c gen.bat)",
       "Bash(dotnet \"../Tools/Luban/Luban.dll\" -t client -c cs-bin -d json -d bin --conf luban.conf -x cs-bin.outputCodeDir=../../Assets/Scripts/Config/Gen -x json.outputDataDir=../../Assets/Res/Config/GenerateDatas/Json -x bin.outputDataDir=../../Assets/Res/Config/GenerateDatas/Byte)",
-      "Bash(cmd /c \"D:\\\\Unity\\\\Project\\\\BattleDemo\\\\Luban\\\\DataTables\\\\gen.bat\")"
+      "Bash(cmd /c \"D:\\\\Unity\\\\Project\\\\BattleDemo\\\\Luban\\\\DataTables\\\\gen.bat\")",
+      "Bash(dotnet build *)",
+      "Bash(dir /b \"Library\\\\PackageCache\")",
+      "Bash(findstr input *)",
+      "Bash(dir /s /b \"Library\\\\PackageCache\\\\com.unity.inputsystem@57d0e36f6123\\\\*.asmdef\")",
+      "Bash(dir /s /b \"Library\\\\ScriptAssemblies\\\\Unity.InputSystem*.dll\")",
+      "Bash(dir /s /b \"Library\\\\PackageCache\\\\com.unity.inputsystem*\\\\InputSystem\\\\*.dll\")",
+      "Bash(dir /s /b \"Assets\\\\Res\\\\Characters\\\\C100001_Ya\")",
+      "Bash(dir /s /b \"Assets\\\\Res\\\\Characters\\\\C100001_Ya\\\\Anima\")",
+      "Bash(dir /s /b \"Assets\\\\Res\\\\Characters\\\\C100001_Ya\\\\Model\")",
+      "Bash(git push *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }
