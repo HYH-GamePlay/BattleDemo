@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Battle.Behavior;
 using Battle.CombatInfo;
+using Tools.Log;
 
 namespace Battle.Core
 {
@@ -16,7 +17,7 @@ namespace Battle.Core
 
         private int _nextActorId = 1;
         private int _nextBehaviorHandle = 1;
-        private float _elapsedTime;
+        private TimeSpan _elapsedTime;
 
         public long Frame { get; private set; }
 
@@ -234,16 +235,16 @@ namespace Battle.Core
             throw new InvalidOperationException($"Actor does not exist: {actorId}");
         }
 
-        public void Tick(float deltaTime)
+        public void Tick(TimeSpan ts)
         {
-            if (deltaTime < 0f)
+            if (ts.TotalMilliseconds < 0f)
             {
-                throw new ArgumentOutOfRangeException(nameof(deltaTime), "Delta time cannot be negative.");
+                throw new ArgumentOutOfRangeException(nameof(ts), "Delta time cannot be negative.");
             }
 
             Frame++;
-            _elapsedTime += deltaTime;
-            var time = new CombatTime(Frame, deltaTime, _elapsedTime);
+            _elapsedTime += ts;
+            var time = new CombatTime(Frame, ts, _elapsedTime);
 
             TickPhase(CombatPhase.PreUpdate, time);
             TickPhase(CombatPhase.Input, time);

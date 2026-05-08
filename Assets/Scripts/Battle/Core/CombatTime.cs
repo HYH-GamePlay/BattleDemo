@@ -1,18 +1,20 @@
+using System;
+
 namespace Battle.Core
 {
     public readonly struct CombatTime
     {
-        public CombatTime(long frame, float deltaTime, float elapsedTime)
+        public CombatTime(long frame, TimeSpan ts, TimeSpan elapsedTime)
         {
             Frame = frame;
-            DeltaTime = deltaTime;
+            DeltaTime = ts;
             ElapsedTime = elapsedTime;
         }
 
         public long Frame { get; }
 
-        public float DeltaTime { get; }
+        public TimeSpan DeltaTime { get; }
 
-        public float ElapsedTime { get; }
+        public TimeSpan ElapsedTime { get; }
     }
 }

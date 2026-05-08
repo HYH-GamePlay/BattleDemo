@@ -13,6 +13,10 @@ namespace Battle.CombatInfo.Action
 
         public bool HasPendingAction => PendingActionId > 0;
 
+        public bool HasRunningRuntimes => _runtimes.Count > 0;
+
+        public ActionRuntimeInfo CurrentRuntime => _runtimes.Count > 0 ? _runtimes[_runtimes.Count - 1] : null;
+
         public void AddRuntime(ActionRuntimeInfo runtime)
         {
             if (runtime != null)

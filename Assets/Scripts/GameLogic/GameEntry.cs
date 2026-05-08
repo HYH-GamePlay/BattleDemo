@@ -46,6 +46,8 @@ namespace GameLogic{
                 await service.Init();
             }
             
+            Game.Tick.Register(_gameStateFsm);
+            
             _gameStateFsm.Start<GameStateInit>();
         }
 
@@ -53,6 +55,8 @@ namespace GameLogic{
             foreach (var service in ServiceLocator.GetAll<IComp>()){
                 await service.UnInit();
             }
+            
+            Game.Tick.Unregister(_gameStateFsm);
         }
 
         private void Update(){

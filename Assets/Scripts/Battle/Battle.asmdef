@@ -2,7 +2,8 @@
     "name": "Battle",
     "rootNamespace": "Battle",
     "references": [
-        "MessagePack"
+        "MessagePack",
+        "GameCore"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

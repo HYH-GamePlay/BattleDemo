@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Battle.Behavior.Action.Executors;
+using Battle.Behavior.State;
 using Battle.CombatInfo.Action;
 using Battle.CombatInfo.Effect;
+using Battle.CombatInfo.State;
+using Battle.CombatInfo.Tag;
 using Battle.Core;
 
 namespace Battle.Behavior.Action
@@ -35,6 +38,7 @@ namespace Battle.Behavior.Action
             _infoHandle = world.AddActorInfo(Owner, new ActionBehaviorInfo());
             _info = world.GetInfo<ActionBehaviorInfo>(_infoHandle);
             RegisterDefaultExecutors();
+            BindStateBehavior(world);
         }
 
         protected override void OnDetached(CombatWorld world)
@@ -108,11 +112,12 @@ namespace Battle.Behavior.Action
 
         public ActionRuntimeInfo PlayAction(int actionId)
         {
-            if (!TryGetActionData(actionId, out var data))
+            if (!CanPlay(actionId))
             {
                 return null;
             }
 
+            var data = _actions[actionId];
             return Play(data, actionId);
         }
 
@@ -125,6 +130,7 @@ namespace Battle.Behavior.Action
 
             var runtime = new ActionRuntimeInfo(_nextRuntimeId++, Owner, actionId, data);
             _info.AddRuntime(runtime);
+            NotifyActionStarted(actionId);
             MarkInfoDirty();
             return runtime;
         }
@@ -163,6 +169,7 @@ namespace Battle.Behavior.Action
                 ExitAllActiveInstructs(world, runtime, default);
                 runtime.IsFinished = true;
                 _info.RemoveRuntime(runtime);
+                NotifyActionFinished(runtime.ActionId);
             }
 
             MarkInfoDirty();
@@ -205,6 +212,11 @@ namespace Battle.Behavior.Action
                 }
 
                 if (branch.input > 0 && !HasBufferedInput(branch.input))
+                {
+                    continue;
+                }
+
+                if (!IsBranchConditionSatisfied(runtime, branch))
                 {
                     continue;
                 }
@@ -364,6 +376,7 @@ namespace Battle.Behavior.Action
             ExitAllActiveInstructs(world, runtime, time);
             runtime.IsFinished = true;
             _info.RemoveRuntime(runtime);
+            NotifyActionFinished(runtime.ActionId);
             MarkInfoDirty();
         }
 
@@ -469,6 +482,106 @@ namespace Battle.Behavior.Action
             RegisterExecutor(InstructType.Camera, new EmptyExecutor<CameraData>());
             RegisterExecutor(InstructType.Vfx, new EmptyExecutor<VfxData>());
             RegisterExecutor(InstructType.ActionLink, new ActionLinkExecutor());
+        }
+
+        private bool IsBranchConditionSatisfied(ActionRuntimeInfo runtime, ActionLinkBranchData branch)
+        {
+            if (branch.beginFrame > 0 && runtime.ElapsedFrames < branch.beginFrame)
+            {
+                return false;
+            }
+
+            if (branch.endFrame > 0 && runtime.ElapsedFrames >= branch.endFrame)
+            {
+                return false;
+            }
+
+            return IsStateConditionSatisfied(branch) && AreTagConditionsSatisfied(branch);
+        }
+
+        private bool IsStateConditionSatisfied(ActionLinkBranchData branch)
+        {
+            if (branch.requiredState == ActorStateId.None && branch.blockedState == ActorStateId.None)
+            {
+                return true;
+            }
+
+            if (_world == null || !_world.TryGetActorInfo(Owner, out InfoHandle _, out ActorStateInfo stateInfo))
+            {
+                return branch.requiredState == ActorStateId.None;
+            }
+
+            if (branch.requiredState != ActorStateId.None && stateInfo.CurrentState != branch.requiredState)
+            {
+                return false;
+            }
+
+            return branch.blockedState == ActorStateId.None || stateInfo.CurrentState != branch.blockedState;
+        }
+
+        private bool AreTagConditionsSatisfied(ActionLinkBranchData branch)
+        {
+            var hasRequiredTags = branch.requiredTags != null && branch.requiredTags.Count > 0;
+            var hasBlockedTags = branch.blockedTags != null && branch.blockedTags.Count > 0;
+            if (!hasRequiredTags && !hasBlockedTags)
+            {
+                return true;
+            }
+
+            if (_world == null || !_world.TryGetActorInfo(Owner, out InfoHandle _, out TagContainerInfo tagInfo))
+            {
+                return !hasRequiredTags;
+            }
+
+            if (hasRequiredTags)
+            {
+                for (var i = 0; i < branch.requiredTags.Count; i++)
+                {
+                    var tag = new TagId(branch.requiredTags[i]);
+                    if (tag.IsValid && !tagInfo.Tags.Contains(tag))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            if (hasBlockedTags)
+            {
+                for (var i = 0; i < branch.blockedTags.Count; i++)
+                {
+                    var tag = new TagId(branch.blockedTags[i]);
+                    if (tag.IsValid && tagInfo.Tags.Contains(tag))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private void BindStateBehavior(CombatWorld world)
+        {
+            if (world.TryGetBehavior(Owner, out ActorStateBehavior stateBehavior) && CanPlayAction == null)
+            {
+                CanPlayAction = stateBehavior.CanPlayAction;
+            }
+        }
+
+        private void NotifyActionStarted(int actionId)
+        {
+            if (actionId > 0 && _world != null && _world.TryGetBehavior(Owner, out ActorStateBehavior stateBehavior))
+            {
+                stateBehavior.NotifyActionStarted(actionId);
+            }
+        }
+
+        private void NotifyActionFinished(int actionId)
+        {
+            if (actionId > 0 && _world != null && _world.TryGetBehavior(Owner, out ActorStateBehavior stateBehavior))
+            {
+                stateBehavior.NotifyActionFinished(actionId);
+            }
         }
 
         private void MarkInfoDirty()
